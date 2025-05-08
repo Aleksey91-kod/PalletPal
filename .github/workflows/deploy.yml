@@ -1,5 +1,6 @@
 name: Deploy to GitHub Pages
 
+# Запуск при пуше в main ветку
 on:
   push:
     branches:
