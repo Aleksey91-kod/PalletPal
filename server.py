@@ -1,15 +1,17 @@
-from flask import Flask, request, jsonify, send_from_directory
-from flask_socketio import SocketIO, emit
+from flask import Flask, request, jsonify, send_from_directory, render_template, abort
 from flask_cors import CORS
 import os
 import json
 from datetime import datetime
 import logging
 from werkzeug.utils import secure_filename
+from waitress import serve
 
-app = Flask(__name__, static_folder='static')
+app = Flask(__name__, 
+    static_folder='.',
+    static_url_path='',
+    template_folder='.')
 CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
@@ -21,6 +23,7 @@ ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # Отключаем кэширование для разработки
 
 # Создаем папку для загрузок, если её нет
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -35,15 +38,75 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
-    return send_from_directory('.', 'index.html')
+    try:
+        return send_from_directory('.', 'index.html')
+    except Exception as e:
+        logger.error(f"Error serving index.html: {str(e)}")
+        abort(404)
+
+@app.route('/styles.css')
+def styles():
+    try:
+        return send_from_directory('.', 'styles.css')
+    except Exception as e:
+        logger.error(f"Error serving styles.css: {str(e)}")
+        abort(404)
+
+@app.route('/index.js')
+def index_js():
+    try:
+        return send_from_directory('.', 'index.js')
+    except Exception as e:
+        logger.error(f"Error serving index.js: {str(e)}")
+        abort(404)
+
+@app.route('/js/<path:path>')
+def send_js(path):
+    try:
+        return send_from_directory('js', path)
+    except Exception as e:
+        logger.error(f"Error serving JS file {path}: {str(e)}")
+        abort(404)
+
+@app.route('/css/<path:path>')
+def send_css(path):
+    try:
+        return send_from_directory('css', path)
+    except Exception as e:
+        logger.error(f"Error serving CSS file {path}: {str(e)}")
+        abort(404)
 
 @app.route('/driver')
 def driver():
-    return send_from_directory('.', 'driver.html')
+    try:
+        return send_from_directory('.', 'driver.html')
+    except Exception as e:
+        logger.error(f"Error serving driver.html: {str(e)}")
+        abort(404)
 
 @app.route('/customer')
 def customer():
-    return send_from_directory('.', 'customer.html')
+    try:
+        return send_from_directory('.', 'customer.html')
+    except Exception as e:
+        logger.error(f"Error serving customer.html: {str(e)}")
+        abort(404)
+
+@app.route('/carrier')
+def carrier():
+    try:
+        return send_from_directory('.', 'carrier.html')
+    except Exception as e:
+        logger.error(f"Error serving carrier.html: {str(e)}")
+        abort(404)
+
+@app.route('/auth')
+def auth():
+    try:
+        return send_from_directory('.', 'auth.html')
+    except Exception as e:
+        logger.error(f"Error serving auth.html: {str(e)}")
+        abort(404)
 
 @app.route('/api/orders', methods=['POST'])
 def create_order():
@@ -141,37 +204,16 @@ def driver_auth():
         logger.error(f"Error in driver auth: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
-@socketio.on('connect')
-def handle_connect():
-    logger.info('Client connected')
+@app.errorhandler(404)
+def not_found_error(error):
+    logger.error(f"404 Error: {request.url}")
+    return jsonify({'error': 'Not found', 'url': request.url}), 404
 
-@socketio.on('disconnect')
-def handle_disconnect():
-    logger.info('Client disconnected')
-
-@socketio.on('join_order')
-def handle_join_order(data):
-    order_id = data.get('order_id')
-    if order_id in messages:
-        emit('message_history', messages[order_id])
-
-@socketio.on('message')
-def handle_message(data):
-    try:
-        order_id = data.get('order_id')
-        if order_id not in messages:
-            messages[order_id] = []
-        
-        message = {
-            'text': data.get('text'),
-            'sender': data.get('sender'),
-            'timestamp': datetime.now().isoformat()
-        }
-        
-        messages[order_id].append(message)
-        emit('message', message, broadcast=True)
-    except Exception as e:
-        logger.error(f"Error handling message: {str(e)}")
+@app.errorhandler(500)
+def internal_error(error):
+    logger.error(f"500 Error: {str(error)}")
+    return jsonify({'error': 'Internal server error'}), 500
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, host='0.0.0.0', port=5000) 
+    # Используем waitress вместо встроенного сервера Flask
+    serve(app, host='0.0.0.0', port=5000, threads=4) 
