@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PalletPal - Личный кабинет заказчика</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="static/logo.png" alt="Логотип Paletall" class="logo-img animated-logo">
+            </div>
+            <div class="user-profile">
+                <div class="profile-info">
+                    <span id="userName">Имя пользователя</span>
+                    <div class="rating">
+                        <span class="stars">★★★★★</span>
+                        <span id="userRating">5.0</span>
+                    </div>
+                </div>
+                <button class="btn btn-danger" onclick="logout()">Выйти</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="orders">Мои заказы</button>
+                <button class="tab-btn" data-tab="profile">Профиль</button>
+            </div>
+
+            <div class="tab-content" id="orders">
+                <div class="orders-list">
+                    <!-- Здесь будет список заказов -->
+                </div>
+                <button class="btn btn-primary" onclick="showNewOrderForm()">Создать заказ</button>
+            </div>
+
+            <div class="tab-content hidden" id="profile">
+                <div class="profile-card">
+                    <h2>Информация о профиле</h2>
+                    <div class="profile-details">
+                        <div class="detail-item">
+                            <label>Имя:</label>
+                            <span id="profileName">Имя пользователя</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Email:</label>
+                            <span id="profileEmail">email@example.com</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Рейтинг:</label>
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span id="profileRating">5.0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Отзывы</h3>
+                    <div class="reviews-list">
+                        <!-- Здесь будет список отзывов -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // Проверка авторизации
+        function checkAuth() {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (!userData || userData.role !== 'customer') {
+                window.location.href = 'auth.html';
+            }
+            return userData;
+        }
+
+        // Загрузка данных пользователя
+        function loadUserData() {
+            const userData = checkAuth();
+            document.getElementById('userName').textContent = userData.name;
+            document.getElementById('userRating').textContent = userData.rating.toFixed(1);
+            document.getElementById('profileName').textContent = userData.name;
+            document.getElementById('profileEmail').textContent = userData.email;
+            document.getElementById('profileRating').textContent = userData.rating.toFixed(1);
+        }
+
+        // Переключение между вкладками
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+                document.getElementById(button.dataset.tab).classList.remove('hidden');
+            });
+        });
+
+        // Выход из системы
+        function logout() {
+            localStorage.removeItem('userData');
+            window.location.href = 'auth.html';
+        }
+
+        // Показать форму нового заказа
+        function showNewOrderForm() {
+            window.location.href = 'index.html';
+        }
+
+        // Загрузка заказов
+        function loadOrders() {
+            const ordersList = document.querySelector('.orders-list');
+            // Здесь будет логика загрузки заказов
+        }
+
+        // Загрузка отзывов
+        function loadReviews() {
+            const reviewsList = document.querySelector('.reviews-list');
+            // Здесь будет логика загрузки отзывов
+        }
+
+        // Инициализация страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserData();
+            loadOrders();
+            loadReviews();
+        });
+    </script>
+</body>
+</html> 
