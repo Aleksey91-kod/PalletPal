@@ -14,21 +14,27 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          python-version: '3.9'
+          node-version: '16'
 
-      - name: Install dependencies
+      - name: Prepare files
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install gunicorn
+          # Создаем структуру директорий
+          mkdir -p dist/css dist/js
+          # Копируем файлы
+          cp index.html dist/
+          cp styles.css dist/css/
+          cp -r js/* dist/js/ || true
+          cp -r static dist/ || true
+          # Создаем .nojekyll
+          touch dist/.nojekyll
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           personal_token: ${{ secrets.PERSONAL_TOKEN }}
-          publish_dir: .
+          publish_dir: ./dist
           publish_branch: gh-pages
-          commit_message: "Deploy to GitHub Pages" 
+          commit_message: "Deploy static files to GitHub Pages" 
