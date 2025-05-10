@@ -1,0 +1,171 @@
+/* Карточки */
+.card {
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--color-shadow);
+    padding: 20px 18px;
+    margin-bottom: 18px;
+    transition: var(--transition);
+}
+
+.card-accent {
+    background: linear-gradient(135deg, #4f8cff 0%, #3b5bfe 100%);
+    color: #fff;
+    border-radius: var(--radius-md);
+    box-shadow: var(--color-shadow);
+    padding: 20px 18px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-accent .card-title {
+    color: #fff;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.card-desc {
+    font-size: 1rem;
+    color: var(--color-text-light);
+    margin-bottom: 8px;
+}
+
+/* Кнопки */
+.btn {
+    display: inline-block;
+    padding: 14px 0;
+    width: 100%;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px 0 rgba(59,91,254,0.10);
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 12px;
+}
+
+.btn-accent {
+    background: var(--color-accent);
+    color: var(--color-primary-dark);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* Поиск */
+.search-box {
+    background: var(--color-grey);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.search-box input {
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    flex: 1;
+    outline: none;
+    color: var(--color-text);
+}
+
+/* Теги */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.tag {
+    background: var(--color-grey);
+    color: var(--color-text-light);
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.tag.active, .tag.selected {
+    background: var(--color-accent);
+    color: var(--color-primary-dark);
+}
+
+/* Верхний бар */
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 18px 10px 18px;
+    background: var(--color-bg);
+}
+
+.topbar-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.topbar-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+    box-shadow: 0 2px 8px 0 rgba(59,91,254,0.10);
+}
+
+.logo-img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #fff;
+    display: block;
+}
+
+/* Навигация */
+.navbar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    max-width: 430px;
+    background: var(--color-white);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: 0 -2px 16px 0 rgba(31, 38, 135, 0.08);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    z-index: 100;
+}
+
+.navbar-icon {
+    font-size: 1.6rem;
+    color: var(--color-text-light);
+    transition: var(--transition);
+}
+
+.navbar-icon.active {
+    color: var(--color-primary);
+} 

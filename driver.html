@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PalletPal — Водитель</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles/app-variables.css">
+    <link rel="stylesheet" href="src/styles/app.css">
+    <link rel="stylesheet" href="src/styles/app-components.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>html,body{height:100%;}</style>
+</head>
+<body>
+<div class="app-mobile">
+    <div class="topbar">
+        <div>
+            <div class="topbar-title">Водитель</div>
+            <div style="color:var(--color-text-light);font-size:1rem;">Ваши заказы и чат</div>
+        </div>
+        <div class="topbar-avatar">
+            <img src="static/logo.png" alt="Логотип PalletPal" class="logo-img">
+        </div>
+    </div>
+    <div style="padding:0 18px;">
+        <div class="card">
+            <div class="card-title">Доступные заказы</div>
+            <div id="ordersList"></div>
+        </div>
+        <div class="card">
+            <div class="card-title">Чат с клиентом</div>
+            <div id="chatMessages" style="min-height:100px;margin-bottom:10px;"></div>
+            <form id="chatForm" style="display:flex;gap:8px;">
+                <input type="text" id="messageInput" class="form-control" placeholder="Введите сообщение...">
+                <button class="btn btn-accent" type="submit" style="width:auto;padding:0 18px;"> <i class="ri-send-plane-2-line"></i></button>
+            </form>
+        </div>
+        <button class="btn btn-accent" style="margin-top:18px;" onclick="logout()">Выйти</button>
+    </div>
+    <nav class="navbar">
+        <i class="ri-home-5-line navbar-icon active"></i>
+        <i class="ri-calendar-2-line navbar-icon"></i>
+        <i class="ri-notification-3-line navbar-icon"></i>
+        <i class="ri-user-3-line navbar-icon"></i>
+    </nav>
+</div>
+<script>
+    // Заглушка для заказов
+    function loadOrders() {
+        const orders = [
+            {id: 101, from: 'Москва', to: 'Санкт-Петербург', status: 'Новый'},
+            {id: 102, from: 'Казань', to: 'Уфа', status: 'В пути'}
+        ];
+        const ordersList = document.getElementById('ordersList');
+        ordersList.innerHTML = '';
+        orders.forEach(order => {
+            const el = document.createElement('div');
+            el.className = 'process-box';
+            el.innerHTML = `<div><div class='process-title'>Заказ #${order.id}</div><div class='process-date'>${order.from} → ${order.to}</div><div class='process-date'>Статус: ${order.status}</div></div><button class='btn btn-accent' style='width:auto;padding:0 14px;font-size:0.95rem;'>Взять</button>`;
+            ordersList.appendChild(el);
+        });
+    }
+    // Чат (заглушка)
+    document.getElementById('chatForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const input = document.getElementById('messageInput');
+        if(input.value.trim()) {
+            document.getElementById('chatMessages').innerHTML += `<div class='process-title' style='text-align:right;'>${input.value}</div>`;
+            input.value = '';
+        }
+    });
+    function logout() {
+        window.location.href = 'index.html';
+    }
+    document.addEventListener('DOMContentLoaded', loadOrders);
+</script>
+</body>
+</html> 
