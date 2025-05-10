@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PalletPal — Исполнитель</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles/app-variables.css">
+    <link rel="stylesheet" href="src/styles/app.css">
+    <link rel="stylesheet" href="src/styles/app-components.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>html,body{height:100%;}</style>
+</head>
+<body>
+<div class="app-mobile">
+    <div class="topbar">
+        <div>
+            <div class="topbar-title">Исполнитель</div>
+            <div style="color:var(--color-text-light);font-size:1rem;">Ваши заказы и профиль</div>
+        </div>
+        <div class="topbar-avatar">
+            <img src="static/logo.png" alt="Логотип PalletPal" class="logo-img">
+        </div>
+    </div>
+    <div style="padding:0 18px;">
+        <div class="tags" style="margin-bottom:18px;">
+            <div class="tag active" data-tab="available">Доступные заказы</div>
+            <div class="tag" data-tab="my-orders">Мои заказы</div>
+            <div class="tag" data-tab="profile">Профиль</div>
+        </div>
+        <div id="availableTab">
+            <div class="card">
+                <div class="card-title">Доступные заказы</div>
+                <div id="availableOrdersList"></div>
+            </div>
+        </div>
+        <div id="myOrdersTab" style="display:none;">
+            <div class="card">
+                <div class="card-title">Мои заказы</div>
+                <div id="myOrdersList"></div>
+            </div>
+        </div>
+        <div id="profileTab" style="display:none;">
+            <div class="card">
+                <div class="card-title">Профиль</div>
+                <div class="process-box" style="margin-bottom:10px;">
+                    <div>
+                        <div class="process-title">Имя: Иван Исполнитель</div>
+                        <div class="process-date">Email: carrier@example.com</div>
+                        <div class="process-date">Рейтинг: 5.0 <span style="color:#FFD700;">★</span></div>
+                        <div class="process-date">Тип транспорта: Грузовик</div>
+                        <div class="process-date">Грузоподъемность: 5 тонн</div>
+                    </div>
+                    <button class="btn btn-accent" style="width:auto;padding:0 14px;font-size:0.95rem;" onclick="logout()">Выйти</button>
+                </div>
+                <div class="card-title" style="margin-top:18px;">Отзывы</div>
+                <div id="reviewsList"></div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar">
+        <i class="ri-home-5-line navbar-icon active"></i>
+        <i class="ri-calendar-2-line navbar-icon"></i>
+        <i class="ri-notification-3-line navbar-icon"></i>
+        <i class="ri-user-3-line navbar-icon"></i>
+    </nav>
+</div>
+<script>
+    // Переключение вкладок
+    document.querySelectorAll('.tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+            document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+            tag.classList.add('active');
+            document.getElementById('availableTab').style.display = tag.dataset.tab === 'available' ? '' : 'none';
+            document.getElementById('myOrdersTab').style.display = tag.dataset.tab === 'my-orders' ? '' : 'none';
+            document.getElementById('profileTab').style.display = tag.dataset.tab === 'profile' ? '' : 'none';
+        });
+    });
+    // Доступные заказы (заглушка)
+    function loadAvailableOrders() {
+        const orders = [
+            {id: 301, from:'Москва', to:'Калуга', status:'Новый'},
+            {id: 302, from:'Пермь', to:'Казань', status:'В пути'}
+        ];
+        const ordersList = document.getElementById('availableOrdersList');
+        ordersList.innerHTML = '';
+        orders.forEach(order => {
+            const el = document.createElement('div');
+            el.className = 'process-box';
+            el.innerHTML = `<div><div class='process-title'>Заказ #${order.id}</div><div class='process-date'>${order.from} → ${order.to}</div><div class='process-date'>Статус: ${order.status}</div></div><button class='btn btn-accent' style='width:auto;padding:0 14px;font-size:0.95rem;'>Взять</button>`;
+            ordersList.appendChild(el);
+        });
+    }
+    // Мои заказы (заглушка)
+    function loadMyOrders() {
+        const orders = [
+            {id: 401, from:'Калуга', to:'Москва', status:'Выполнен'},
+            {id: 402, from:'Казань', to:'Пермь', status:'В пути'}
+        ];
+        const ordersList = document.getElementById('myOrdersList');
+        ordersList.innerHTML = '';
+        orders.forEach(order => {
+            const el = document.createElement('div');
+            el.className = 'process-box';
+            el.innerHTML = `<div><div class='process-title'>Заказ #${order.id}</div><div class='process-date'>${order.from} → ${order.to}</div><div class='process-date'>Статус: ${order.status}</div></div>`;
+            ordersList.appendChild(el);
+        });
+    }
+    // Отзывы (заглушка)
+    function loadReviews() {
+        const reviews = [
+            {author:'Заказчик Анна',text:'Все отлично!'},
+            {author:'Клиент Олег',text:'Быстрая доставка.'}
+        ];
+        const reviewsList = document.getElementById('reviewsList');
+        reviewsList.innerHTML = '';
+        reviews.forEach(r => {
+            const el = document.createElement('div');
+            el.className = 'process-box';
+            el.innerHTML = `<div><div class='process-title'>${r.author}</div><div class='process-date'>${r.text}</div></div>`;
+            reviewsList.appendChild(el);
+        });
+    }
+    function logout() {
+        window.location.href = 'index.html';
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        loadAvailableOrders();
+        loadMyOrders();
+        loadReviews();
+    });
+</script>
+</body>
+</html> 
