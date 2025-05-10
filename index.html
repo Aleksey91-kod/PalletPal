@@ -10,11 +10,11 @@
    
 </head>
 <body>
-        <div class="container">
-        <div class="logo-container">
+    <div class="container">
+            <div class="logo-container">
             <div class="logo-icon">🚛</div>
-            <h1 class="logo-text">PalletPal</h1>
-            </div>
+                <h1 class="logo-text">PalletPal</h1>
+        </div>
         
         <div class="form-container">
             <form id="orderForm" onsubmit="sendOrder(event)">
@@ -27,22 +27,22 @@
                         <option value="Контейнеры">Контейнеры</option>
                         <option value="Другое">Другое</option>
                                     </select>
-                                </div>
+        </div>
 
                 <div class="form-group">
                     <label for="from">Откуда</label>
                     <div class="input-wrapper">
                         <input type="text" id="from" placeholder="Введите город отправления" required>
-                        </div>
-                    </div>
+    </div>
+        </div>
 
                 <div class="form-group">
                     <label for="to">Куда</label>
                     <div class="input-wrapper">
                         <input type="text" id="to" placeholder="Город/склад" required autocomplete="off" oninput="showSuggestions(this, 'to-list')" onblur="hideSuggestions('to-list')" onfocus="showSuggestions(this, 'to-list')">
                         <ul id="to-list" class="suggestions" style="display:none;"></ul>
-                </div>
-                            </div>
+        </div>
+        </div>
 
                 <div class="form-group">
                     <label for="bodyType">Тип кузова</label>
@@ -57,9 +57,9 @@
                         <option value="Цистерна">Цистерна</option>
                         <option value="Другое">Другое</option>
                 </select>
-                        </div>
+        </div>
 
-                <div class="form-group">
+                    <div class="form-group">
                     <label for="tonnage">Тоннаж</label>
                     <select id="tonnage" required>
                         <option value="">Выберите тоннаж</option>
@@ -69,51 +69,51 @@
                         <option value="10">до 10 т</option>
                         <option value="20">до 20 т (фура)</option>
                     </select>
-                    </div>
+            </div>
 
-                <div class="form-group">
+                    <div class="form-group">
                     <label for="dimensions">Размеры (Д×Ш×В, м)</label>
                     <input type="text" id="dimensions" placeholder="Например: 4×2×2" required>
-                </div>
+        </div>
 
-                <div class="form-group">
+                    <div class="form-group">
                     <label for="distance">Расстояние (км)</label>
                     <input type="number" id="distance" placeholder="Введите расстояние" min="1" required oninput="calcPerKm()">
             </div>
 
-                <div class="form-group">
+                    <div class="form-group">
                     <label for="payment">Сумма оплаты (₽)</label>
                     <input type="number" id="payment" placeholder="Введите сумму" min="1" required oninput="calcPerKm()">
-                        </div>
+            </div>
 
                 <div class="form-group">
                     <div class="price-info">
                         Стоимость за км: <span id="perKm">-</span> ₽/км
-                    </div>
-                </div>
+        </div>
+        </div>
 
                 <div class="form-group">
                     <div class="checkbox-group">
                         <label><input type="checkbox" id="tollRoads"> Платные дороги</label>
                         <label><input type="checkbox" id="platon" onchange="togglePlaton()"> Платон</label>
-                        </div>
-                    </div>
+        </div>
+        </div>
 
                 <div id="platonBlock" class="form-group" style="display:none;">
                     <label for="mass">Масса транспорта (т)</label>
                     <input type="number" id="mass" placeholder="Введите массу" min="1">
-                </div>
+    </div>
 
                 <button type="submit" class="btn btn-primary">Отправить заказ</button>
-            </form>
-    </div>
+                </form>
+</div>
 
         <div id="successBlock" class="card fade-in" style="display:none;">
                         <div class="card-body">
                 <p class="success-message">Заказ успешно отправлен!</p>
                         </div>
                     </div>
-                </div>
+    </div>
 
 <script>
         // ... existing code ...

@@ -2,165 +2,149 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PalletPal - Личный кабинет перевозчика</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PalletPal — Перевозчик</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles/app-variables.css">
+    <link rel="stylesheet" href="src/styles/app.css">
+    <link rel="stylesheet" href="src/styles/app-components.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>html,body{height:100%;}</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="logo-container">
-                <img src="static/logo.png" alt="Логотип Paletall" class="logo-img animated-logo">
-            </div>
-            <div class="user-profile">
-                <div class="profile-info">
-                    <span id="userName">Имя пользователя</span>
-                    <div class="rating">
-                        <span class="stars">★★★★★</span>
-                        <span id="userRating">5.0</span>
-                    </div>
-                </div>
-                <button class="btn btn-danger" onclick="logout()">Выйти</button>
+<div class="app-mobile">
+    <div class="topbar">
+        <div>
+            <div class="topbar-title">Перевозчик</div>
+            <div style="color:var(--color-text-light);font-size:1rem;">Ваши заказы и профиль</div>
+        </div>
+        <div class="topbar-avatar">
+            <img src="static/logo.png" alt="Логотип PalletPal" class="logo-img">
+        </div>
+    </div>
+    <div style="padding:0 18px;">
+        <div class="tags" style="margin-bottom:18px;">
+            <div class="tag active" data-tab="available">Доступные заказы</div>
+            <div class="tag" data-tab="my-orders">Мои заказы</div>
+            <div class="tag" data-tab="profile">Профиль</div>
+        </div>
+        <div id="availableTab">
+            <div class="card">
+                <div class="card-title">Доступные заказы</div>
+                <div id="availableOrdersList"></div>
             </div>
         </div>
-
-        <div class="content">
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="available">Доступные заказы</button>
-                <button class="tab-btn" data-tab="my-orders">Мои заказы</button>
-                <button class="tab-btn" data-tab="profile">Профиль</button>
+        <div id="myOrdersTab" style="display:none;">
+            <div class="card">
+                <div class="card-title">Мои заказы</div>
+                <div id="myOrdersList"></div>
             </div>
-
-            <div class="tab-content" id="available">
-                <div class="orders-list">
-                    <!-- Здесь будет список доступных заказов -->
-                </div>
-            </div>
-
-            <div class="tab-content hidden" id="my-orders">
-                <div class="orders-list">
-                    <!-- Здесь будет список моих заказов -->
-                </div>
-            </div>
-
-            <div class="tab-content hidden" id="profile">
-                <div class="profile-card">
-                    <h2>Информация о профиле</h2>
-                    <div class="profile-details">
-                        <div class="detail-item">
-                            <label>Имя:</label>
-                            <span id="profileName">Имя пользователя</span>
-                        </div>
-                        <div class="detail-item">
-                            <label>Email:</label>
-                            <span id="profileEmail">email@example.com</span>
-                        </div>
-                        <div class="detail-item">
-                            <label>Рейтинг:</label>
-                            <div class="rating">
-                                <span class="stars">★★★★★</span>
-                                <span id="profileRating">5.0</span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <label>Тип транспорта:</label>
-                            <span id="vehicleType">Грузовик</span>
-                        </div>
-                        <div class="detail-item">
-                            <label>Грузоподъемность:</label>
-                            <span id="capacity">5 тонн</span>
-                        </div>
+        </div>
+        <div id="profileTab" style="display:none;">
+            <div class="card">
+                <div class="card-title">Профиль</div>
+                <div class="process-box" style="margin-bottom:10px;">
+                    <div>
+                        <div class="process-title" id="profileName">Имя пользователя</div>
+                        <div class="process-date" id="profileEmail">email@example.com</div>
+                        <div class="process-date">Рейтинг: <span id="profileRating">5.0</span> <span style="color:#FFD700;">★</span></div>
+                        <div class="process-date">Тип транспорта: <span id="vehicleType">Грузовик</span></div>
+                        <div class="process-date">Грузоподъемность: <span id="capacity">5 тонн</span></div>
                     </div>
-
-                    <h3>Отзывы</h3>
-                    <div class="reviews-list">
-                        <!-- Здесь будет список отзывов -->
-                    </div>
+                    <button class="btn btn-accent" style="width:auto;padding:0 14px;font-size:0.95rem;" onclick="logout()">Выйти</button>
                 </div>
+                <div class="card-title" style="margin-top:18px;">Отзывы</div>
+                <div id="reviewsList"></div>
             </div>
         </div>
     </div>
-
-    <script>
-        // Инициализация Telegram WebApp
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        // Проверка авторизации
-        function checkAuth() {
-            const userData = JSON.parse(localStorage.getItem('userData'));
-            if (!userData || userData.role !== 'carrier') {
-                window.location.href = 'auth.html';
-            }
-            return userData;
-        }
-
-        // Загрузка данных пользователя
-        function loadUserData() {
-            const userData = checkAuth();
-            document.getElementById('userName').textContent = userData.name;
-            document.getElementById('userRating').textContent = userData.rating.toFixed(1);
-            document.getElementById('profileName').textContent = userData.name;
-            document.getElementById('profileEmail').textContent = userData.email;
-            document.getElementById('profileRating').textContent = userData.rating.toFixed(1);
-            document.getElementById('vehicleType').textContent = userData.vehicleType || 'Не указано';
-            document.getElementById('capacity').textContent = userData.capacity || 'Не указано';
-        }
-
-        // Переключение между вкладками
-        document.querySelectorAll('.tab-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                
-                document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-                document.getElementById(button.dataset.tab).classList.remove('hidden');
-            });
+    <nav class="navbar">
+        <i class="ri-home-5-line navbar-icon active"></i>
+        <i class="ri-calendar-2-line navbar-icon"></i>
+        <i class="ri-notification-3-line navbar-icon"></i>
+        <i class="ri-user-3-line navbar-icon"></i>
+    </nav>
+</div>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+    // Инициализация Telegram WebApp
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    // Переключение вкладок
+    document.querySelectorAll('.tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+            document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+            tag.classList.add('active');
+            document.getElementById('availableTab').style.display = tag.dataset.tab === 'available' ? '' : 'none';
+            document.getElementById('myOrdersTab').style.display = tag.dataset.tab === 'my-orders' ? '' : 'none';
+            document.getElementById('profileTab').style.display = tag.dataset.tab === 'profile' ? '' : 'none';
         });
-
-        // Выход из системы
-        function logout() {
-            localStorage.removeItem('userData');
-            window.location.href = 'auth.html';
-        }
-
-        // Загрузка доступных заказов
-        function loadAvailableOrders() {
-            const ordersList = document.querySelector('#available .orders-list');
-            // Здесь будет логика загрузки доступных заказов
-        }
-
-        // Загрузка моих заказов
-        function loadMyOrders() {
-            const ordersList = document.querySelector('#my-orders .orders-list');
-            // Здесь будет логика загрузки моих заказов
-        }
-
-        // Загрузка отзывов
-        function loadReviews() {
-            const reviewsList = document.querySelector('.reviews-list');
-            // Здесь будет логика загрузки отзывов
-        }
-
-        // Принятие заказа
-        function acceptOrder(orderId) {
-            // Здесь будет логика принятия заказа
-        }
-
-        // Завершение заказа
-        function completeOrder(orderId) {
-            // Здесь будет логика завершения заказа
-        }
-
-        // Инициализация страницы
-        document.addEventListener('DOMContentLoaded', () => {
-            loadUserData();
-            loadAvailableOrders();
-            loadMyOrders();
-            loadReviews();
+    });
+    // Проверка авторизации и загрузка профиля (заглушка)
+    function loadUserData() {
+        const userData = JSON.parse(localStorage.getItem('userData')) || {name:'Имя пользователя',email:'email@example.com',rating:5.0,vehicleType:'Грузовик',capacity:'5 тонн'};
+        document.getElementById('profileName').textContent = userData.name;
+        document.getElementById('profileEmail').textContent = userData.email;
+        document.getElementById('profileRating').textContent = userData.rating.toFixed(1);
+        document.getElementById('vehicleType').textContent = userData.vehicleType || 'Не указано';
+        document.getElementById('capacity').textContent = userData.capacity || 'Не указано';
+    }
+    // Выход
+    function logout() {
+        localStorage.removeItem('userData');
+        window.location.href = 'auth.html';
+    }
+    // Загрузка доступных заказов (заглушка)
+    function loadAvailableOrders() {
+        const orders = [
+            {id: 301, from:'Москва', to:'Калуга', status:'Новый'},
+            {id: 302, from:'Пермь', to:'Казань', status:'В пути'}
+        ];
+        const ordersList = document.getElementById('availableOrdersList');
+        ordersList.innerHTML = '';
+        orders.forEach(order => {
+            const el = document.createElement('div');
+            el.className = 'process-box';
+            el.innerHTML = `<div><div class='process-title'>Заказ #${order.id}</div><div class='process-date'>${order.from} → ${order.to}</div><div class='process-date'>Статус: ${order.status}</div></div><button class='btn btn-accent' style='width:auto;padding:0 14px;font-size:0.95rem;'>Взять</button>`;
+            ordersList.appendChild(el);
         });
-    </script>
+    }
+    // Загрузка моих заказов (заглушка)
+    function loadMyOrders() {
+        const orders = [
+            {id: 401, from:'Калуга', to:'Москва', status:'Выполнен'},
+            {id: 402, from:'Казань', to:'Пермь', status:'В пути'}
+        ];
+        const ordersList = document.getElementById('myOrdersList');
+        ordersList.innerHTML = '';
+        orders.forEach(order => {
+            const el = document.createElement('div');
+            el.className = 'process-box';
+            el.innerHTML = `<div><div class='process-title'>Заказ #${order.id}</div><div class='process-date'>${order.from} → ${order.to}</div><div class='process-date'>Статус: ${order.status}</div></div>`;
+            ordersList.appendChild(el);
+        });
+    }
+    // Загрузка отзывов (заглушка)
+    function loadReviews() {
+        const reviews = [
+            {author:'Заказчик Анна',text:'Все отлично!'},
+            {author:'Клиент Олег',text:'Быстрая доставка.'}
+        ];
+        const reviewsList = document.getElementById('reviewsList');
+        reviewsList.innerHTML = '';
+        reviews.forEach(r => {
+            const el = document.createElement('div');
+            el.className = 'process-box';
+            el.innerHTML = `<div><div class='process-title'>${r.author}</div><div class='process-date'>${r.text}</div></div>`;
+            reviewsList.appendChild(el);
+        });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        loadUserData();
+        loadAvailableOrders();
+        loadMyOrders();
+        loadReviews();
+    });
+</script>
 </body>
 </html> 

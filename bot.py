@@ -4,14 +4,21 @@ from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 from aiogram.fsm.storage.memory import MemoryStorage
+from dotenv import load_dotenv
 
-# Токен бота
-TOKEN = "7624038782:AAEgIc0yRnnA9c5VYce8eQETTZEjUypcuo0"
+# Загружаем переменные окружения
+load_dotenv()
+
+# Получаем токен из переменных окружения
+TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+if not TOKEN:
+    raise ValueError("TELEGRAM_BOT_TOKEN не найден в переменных окружения")
+
 bot = Bot(token=TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 
 # URL вашего WebApp на GitHub Pages
-WEBAPP_URL = "https://aleksey91-kod.github.io/PalletPal/index.html"
+WEBAPP_URL = "https://aleksey91-kod.github.io/PalletPal/ModernApp/index.html"
 
 def get_main_menu():
     """Клавиатура с кнопкой WebApp"""

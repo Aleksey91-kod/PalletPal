@@ -37,4 +37,7 @@ jobs:
           personal_token: ${{ secrets.PERSONAL_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
-          commit_message: "Deploy static files to GitHub Pages" 
+          commit_message: "Deploy static files to GitHub Pages"
+
+      - name: Run bot.py
+        run: python bot.py 

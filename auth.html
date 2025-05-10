@@ -2,168 +2,129 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PalletPal - Авторизация</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PalletPal — Вход</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles/app-variables.css">
+    <link rel="stylesheet" href="src/styles/app.css">
+    <link rel="stylesheet" href="src/styles/app-components.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>html,body{height:100%;}</style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo-container">
-            <img src="static/logo.png" alt="Логотип Paletall" class="logo-img animated-logo">
+<div class="app-mobile">
+    <div class="topbar">
+        <div>
+            <div class="topbar-title">Вход</div>
+            <div style="color:var(--color-text-light);font-size:1rem;">Добро пожаловать!</div>
         </div>
-
-        <div class="form-container">
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="login">Вход</button>
-                <button class="tab-btn" data-tab="register">Регистрация</button>
-            </div>
-
-            <div class="tab-content" id="login">
-                <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="topbar-avatar">
+            <img src="static/logo.png" alt="Логотип PalletPal" class="logo-img">
+        </div>
+    </div>
+    <div style="padding:0 18px;">
+        <div class="tags" style="margin-bottom:18px;">
+            <div class="tag active" data-tab="login">Вход</div>
+            <div class="tag" data-tab="register">Регистрация</div>
+        </div>
+        <div id="loginTab">
+            <div class="card">
+                <div class="card-title">Вход</div>
+                <form id="loginForm">
                     <div class="form-group">
                         <label for="loginEmail">Email</label>
-                        <input type="email" id="loginEmail" required>
+                        <input type="email" id="loginEmail" class="form-control" required>
                     </div>
-
                     <div class="form-group">
                         <label for="loginPassword">Пароль</label>
-                        <input type="password" id="loginPassword" required>
+                        <input type="password" id="loginPassword" class="form-control" required>
                     </div>
-
                     <div class="form-group">
                         <label>Выберите роль</label>
-                        <div class="role-selector">
-                            <label class="role-option">
-                                <input type="radio" name="loginRole" value="customer" required>
-                                <span class="role-icon">👤</span>
-                                <span>Заказчик</span>
-                            </label>
-                            <label class="role-option">
-                                <input type="radio" name="loginRole" value="carrier" required>
-                                <span class="role-icon">🚚</span>
-                                <span>Перевозчик</span>
-                            </label>
+                        <div class="tags">
+                            <label class="tag"><input type="radio" name="loginRole" value="customer" required style="margin-right:6px;">Заказчик</label>
+                            <label class="tag"><input type="radio" name="loginRole" value="carrier" required style="margin-right:6px;">Перевозчик</label>
                         </div>
                     </div>
-
-                    <button type="submit" class="btn btn-primary">Войти</button>
+                    <button type="submit" class="btn btn-accent">Войти</button>
                 </form>
             </div>
-
-            <div class="tab-content hidden" id="register">
-                <form id="registerForm" onsubmit="handleRegister(event)">
+        </div>
+        <div id="registerTab" style="display:none;">
+            <div class="card">
+                <div class="card-title">Регистрация</div>
+                <form id="registerForm">
                     <div class="form-group">
                         <label for="registerName">Имя</label>
-                        <input type="text" id="registerName" required>
+                        <input type="text" id="registerName" class="form-control" required>
                     </div>
-
                     <div class="form-group">
                         <label for="registerEmail">Email</label>
-                        <input type="email" id="registerEmail" required>
+                        <input type="email" id="registerEmail" class="form-control" required>
                     </div>
-
                     <div class="form-group">
                         <label for="registerPassword">Пароль</label>
-                        <input type="password" id="registerPassword" required>
+                        <input type="password" id="registerPassword" class="form-control" required>
                     </div>
-
                     <div class="form-group">
                         <label for="registerConfirmPassword">Подтвердите пароль</label>
-                        <input type="password" id="registerConfirmPassword" required>
+                        <input type="password" id="registerConfirmPassword" class="form-control" required>
                     </div>
-
                     <div class="form-group">
                         <label>Выберите роль</label>
-                        <div class="role-selector">
-                            <label class="role-option">
-                                <input type="radio" name="registerRole" value="customer" required>
-                                <span class="role-icon">👤</span>
-                                <span>Заказчик</span>
-                            </label>
-                            <label class="role-option">
-                                <input type="radio" name="registerRole" value="carrier" required>
-                                <span class="role-icon">🚚</span>
-                                <span>Перевозчик</span>
-                            </label>
+                        <div class="tags">
+                            <label class="tag"><input type="radio" name="registerRole" value="customer" required style="margin-right:6px;">Заказчик</label>
+                            <label class="tag"><input type="radio" name="registerRole" value="carrier" required style="margin-right:6px;">Перевозчик</label>
                         </div>
                     </div>
-
-                    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                    <button type="submit" class="btn btn-accent">Зарегистрироваться</button>
                 </form>
             </div>
         </div>
     </div>
-
-    <script>
-        // Инициализация Telegram WebApp
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        // Переключение между вкладками
-        document.querySelectorAll('.tab-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                
-                document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-                document.getElementById(button.dataset.tab).classList.remove('hidden');
-            });
+</div>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+    // Инициализация Telegram WebApp
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    // Переключение вкладок
+    document.querySelectorAll('.tag[data-tab]').forEach(tag => {
+        tag.addEventListener('click', () => {
+            document.querySelectorAll('.tag[data-tab]').forEach(t => t.classList.remove('active'));
+            tag.classList.add('active');
+            document.getElementById('loginTab').style.display = tag.dataset.tab === 'login' ? '' : 'none';
+            document.getElementById('registerTab').style.display = tag.dataset.tab === 'register' ? '' : 'none';
         });
-
-        // Обработка входа
-        function handleLogin(event) {
-            event.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const role = document.querySelector('input[name="loginRole"]:checked').value;
-
-            // Здесь будет логика авторизации
-            const userData = {
-                email,
-                role,
-                // Добавьте другие необходимые данные
-            };
-
-            // Сохраняем данные пользователя
-            localStorage.setItem('userData', JSON.stringify(userData));
-
-            // Перенаправляем на соответствующую страницу
-            window.location.href = role === 'customer' ? 'customer.html' : 'carrier.html';
+    });
+    // Обработка входа
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const role = document.querySelector('input[name="loginRole"]:checked').value;
+        // Здесь будет логика авторизации
+        const userData = { email, role };
+        localStorage.setItem('userData', JSON.stringify(userData));
+        window.location.href = role === 'customer' ? 'customer.html' : 'carrier.html';
+    });
+    // Обработка регистрации
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const name = document.getElementById('registerName').value;
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
+        const confirmPassword = document.getElementById('registerConfirmPassword').value;
+        const role = document.querySelector('input[name="registerRole"]:checked').value;
+        if (password !== confirmPassword) {
+            alert('Пароли не совпадают');
+            return;
         }
-
-        // Обработка регистрации
-        function handleRegister(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('registerConfirmPassword').value;
-            const role = document.querySelector('input[name="registerRole"]:checked').value;
-
-            if (password !== confirmPassword) {
-                alert('Пароли не совпадают');
-                return;
-            }
-
-            // Здесь будет логика регистрации
-            const userData = {
-                name,
-                email,
-                role,
-                rating: 0,
-                reviews: []
-            };
-
-            // Сохраняем данные пользователя
-            localStorage.setItem('userData', JSON.stringify(userData));
-
-            // Перенаправляем на соответствующую страницу
-            window.location.href = role === 'customer' ? 'customer.html' : 'carrier.html';
-        }
-    </script>
+        // Здесь будет логика регистрации
+        const userData = { name, email, role, rating: 5.0, vehicleType: '', capacity: '' };
+        localStorage.setItem('userData', JSON.stringify(userData));
+        window.location.href = role === 'customer' ? 'customer.html' : 'carrier.html';
+    });
+</script>
 </body>
 </html> 
